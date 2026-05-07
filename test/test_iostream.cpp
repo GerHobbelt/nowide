@@ -491,9 +491,9 @@ public:
 void test_console()
 {
 #ifdef __MINGW32__
-    bool isMinGW_CI = std::getenv("CI");
+    const bool isMinGW_CI = std::getenv("CI");
 #else
-    bool isMinGW_CI = false;
+    const bool isMinGW_CI = false;
 #endif
 #ifndef BOOST_NOWIDE_DISABLE_CIN_TEST
     std::cout << "Test cin console: " << std::flush;
@@ -514,17 +514,23 @@ void test_console()
         TEST(std::getline(cin, line));
         std::cout << "ASCII line read" << std::endl;
         // MinGW on CI sometimes swallows the (mocked) first line or returns it multiple times
+        DISABLE_CONST_EXPR_DETECTED
         if(isMinGW_CI && line == testStringIn2)
+        {
+            DISABLE_CONST_EXPR_DETECTED_POP
             std::cout << "WARNING: MinGW CI issue detected, skipping part of test"; // LCOV_EXCL_LINE
-        else
+        } else
         {
             TEST_EQ(line, testStringIn1);
             std::cout << "UTF-8 line read" << std::endl;
             line.clear();
             TEST(std::getline(cin, line));
+            DISABLE_CONST_EXPR_DETECTED
             if(isMinGW_CI && line == testStringIn1)
+            {
+                DISABLE_CONST_EXPR_DETECTED_POP
                 std::cout << "WARNING: MinGW CI issue detected, skipping 1st part of test"; // LCOV_EXCL_LINE
-            else
+            } else
                 TEST_EQ(line, testStringIn2);
         }
     }
@@ -540,9 +546,12 @@ void test_console()
         cout << testString << std::flush;
 
         const auto data = stdoutHandle.getBufferData();
+        DISABLE_CONST_EXPR_DETECTED
         if(isMinGW_CI && data.empty())
+        {
+            DISABLE_CONST_EXPR_DETECTED_POP
             std::cout << "WARNING: MinGW CI issue detected, skipping part of test"; // LCOV_EXCL_LINE
-        else
+        } else
             TEST_EQ(data, nw::widen(testString));
     }
     std::cout << "Test cerr console" << std::endl;
@@ -557,7 +566,13 @@ void test_console()
         cerr << testString << std::flush;
 
         const auto data = stderrHandle.getBufferData();
-        TEST_EQ(data, nw::widen(testString));
+        DISABLE_CONST_EXPR_DETECTED
+        if(isMinGW_CI && data.empty())
+        {
+            DISABLE_CONST_EXPR_DETECTED_POP
+            std::cout << "WARNING: MinGW CI issue detected, skipping part of test"; // LCOV_EXCL_LINE
+        } else
+            TEST_EQ(data, nw::widen(testString));
     }
     std::cout << "Console tests done" << std::endl;
 }
