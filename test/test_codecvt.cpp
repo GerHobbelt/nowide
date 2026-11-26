@@ -1,10 +1,8 @@
 //
-//  Copyright (c) 2015 Artyom Beilis (Tonkikh)
+// Copyright (c) 2015 Artyom Beilis (Tonkikh)
 //
-//  Distributed under the Boost Software License, Version 1.0. (See
-//  accompanying file LICENSE or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 #include <nowide/utf8_codecvt.hpp>
 
@@ -295,7 +293,15 @@ void test_codecvt_err()
             TEST_EQ(cvt.in(mb, from, from_end, from_next, to, to_end, to_next), cvt_type::partial);
             TEST(from_next == from + 1);
             TEST(to_next == to + 1);
+            // False positive in GCC 13 in MinGW
+#if defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfree-nonheap-object"
+#endif
             TEST(std::wstring(to, to_next) == std::wstring(L"1"));
+#if defined(__GNUC__) && __GNUC__ >= 13
+#pragma GCC diagnostic pop
+#endif
         }
         {
             char buf[4] = {};

@@ -1,10 +1,8 @@
 //
-//  Copyright (c) 2020 Alexander Grund
+// Copyright (c) 2020 Alexander Grund
 //
-//  Distributed under the Boost Software License, Version 1.0. (See
-//  accompanying file LICENSE or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 
 #include <nowide/detail/is_path.hpp>
 #include <nowide/detail/is_string_container.hpp>
@@ -30,7 +28,9 @@
 #define NOWIDE_TEST_STD_PATH
 #endif
 #if defined(__cpp_lib_experimental_filesystem)
+#ifndef _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#endif
 #include <experimental/filesystem>
 #define NOWIDE_TEST_STD_EXPERIMENTAL_PATH
 #endif

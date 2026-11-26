@@ -1,10 +1,9 @@
 //
-//  Copyright (c) 2020 Alexander Grund
+// Copyright (c) 2020 Alexander Grund
 //
-//  Distributed under the Boost Software License, Version 1.0. (See
-//  accompanying file LICENSE or copy at
-//  http://www.boost.org/LICENSE_1_0.txt)
-//
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
+
 #ifndef NOWIDE_DETAIL_IS_PATH_HPP_INCLUDED
 #define NOWIDE_DETAIL_IS_PATH_HPP_INCLUDED
 
@@ -27,7 +26,7 @@ namespace nowide {
 
             static constexpr bool value = decltype(test<T>(0))::value;
         };
-        /// SFINAE trait which has a member "type = Result" if the Path is a *\::filesystem::path
+        /// SFINAE trait/alias which resolves to Result if the Path is a *\::filesystem::path
         template<typename Path, typename Result>
         using enable_if_path_t = typename std::enable_if<is_path<Path>::value, Result>::type;
 
